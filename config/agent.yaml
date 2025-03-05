@@ -1,6 +1,6 @@
 general:
   logFile: log/agent.log
-  bindAddress: :8443
+  bindAddress: :9443
 scan:
   dir: /my/src/bit-fever/reports
   periodHour: 4

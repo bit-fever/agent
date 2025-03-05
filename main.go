@@ -26,6 +26,7 @@ package main
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"github.com/bit-fever/agent/pkg/app"
 	"github.com/bit-fever/agent/pkg/core"
 	"github.com/bit-fever/agent/pkg/service"
@@ -108,16 +109,27 @@ func registerServices() *gin.Engine {
 func runHttpServer(router *gin.Engine, cfg *app.Config) {
 	log.Println("Starting HTTPS server...")
 
+	caCert, err := os.ReadFile("config/ca.crt")
+	if err != nil {
+		log.Fatal("Cannot read ca.crt file: "+err.Error())
+	}
+
+	rootCAs := x509.NewCertPool()
+	if ok := rootCAs.AppendCertsFromPEM(caCert); !ok {
+		log.Fatal("Failed to append CA cert to local certificate pool")
+	}
+
 	server := &http.Server{
 		Addr:      cfg.General.BindAddress,
 		TLSConfig: &tls.Config{
+			ClientCAs:  rootCAs,
 			ClientAuth: tls.RequireAndVerifyClientCert,
 		},
 		Handler: router,
 	}
 
 	log.Println("Running")
-	err := server.ListenAndServeTLS("config/agent.crt", "config/agent.key")
+	err = server.ListenAndServeTLS("config/agent.crt", "config/agent.key")
 
 	if err != nil {
 		log.Fatal(err)
