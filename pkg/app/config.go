@@ -36,6 +36,7 @@ type Config struct {
 	Scan struct {
 		Dir        string
 		PeriodHour time.Duration
+		Extension  string
 	}
 }
 

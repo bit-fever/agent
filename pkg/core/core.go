@@ -84,7 +84,7 @@ func run(cfg *app.Config) {
 		tsMap := NewTradingSystemMap()
 
 		for _, entry := range files {
-			if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".data") {
+			if !entry.IsDir() && strings.HasSuffix(entry.Name(), cfg.Scan.Extension) {
 				ts := handleFile(dir, entry.Name())
 				if ts != nil {
 					tsMap.TradingSystems[entry.Name()] = ts

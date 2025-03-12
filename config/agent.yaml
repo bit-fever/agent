@@ -4,3 +4,4 @@ general:
 scan:
   dir: /my/src/bit-fever/reports
   periodHour: 4
+  extension: .data
