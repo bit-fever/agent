@@ -87,7 +87,11 @@ func run(cfg *app.Config) {
 			if !entry.IsDir() && strings.HasSuffix(entry.Name(), cfg.Scan.Extension) {
 				ts := handleFile(dir, entry.Name())
 				if ts != nil {
-					tsMap.TradingSystems[entry.Name()] = ts
+					if tsIn,ok:=tsMap.TradingSystems[ts.Name]; ok {
+						tsIn.Trades = append(tsIn.Trades, ts.Trades...)
+					} else {
+						tsMap.TradingSystems[ts.Name] = ts
+					}
 				}
 			}
 		}
