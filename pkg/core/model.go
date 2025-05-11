@@ -25,6 +25,10 @@ THE SOFTWARE.
 package core
 
 //=============================================================================
+//===
+//=== TradingSystemMap
+//===
+//=============================================================================
 
 type TradingSystemMap struct {
 	TradingSystems map[string]*TradingSystem
@@ -32,13 +36,55 @@ type TradingSystemMap struct {
 
 //=============================================================================
 
+func NewTradingSystemMap() *TradingSystemMap {
+	ss := &TradingSystemMap{}
+	ss.TradingSystems = map[string]*TradingSystem{}
+	return ss
+}
+
+//=============================================================================
+//===
+//=== TradingSystem
+//===
+//=============================================================================
+
 type TradingSystem struct {
 	Name       string
 	DataSymbol string
 
+	TradeLists []*TradeList
+}
+
+//=============================================================================
+
+func NewTradingSystem() *TradingSystem {
+	ts := &TradingSystem{}
+	ts.TradeLists = []*TradeList{}
+	return ts
+}
+
+//=============================================================================
+//===
+//=== TradeList
+//===
+//=============================================================================
+
+type TradeList struct {
 	Trades []*Trade
 }
 
+//=============================================================================
+
+func NewTradeList() *TradeList {
+	tl := TradeList{}
+	tl.Trades = []*Trade{}
+	return &tl
+}
+
+//=============================================================================
+//===
+//=== Trade
+//===
 //=============================================================================
 
 type Trade struct {
@@ -53,22 +99,6 @@ type Trade struct {
 	GrossProfit float64
 	Contracts   int64
 	Position    int64
-}
-
-//=============================================================================
-
-func NewTradingSystemMap() *TradingSystemMap {
-	ss := &TradingSystemMap{}
-	ss.TradingSystems = map[string]*TradingSystem{}
-	return ss
-}
-
-//=============================================================================
-
-func NewTradingSystem() *TradingSystem {
-	str := &TradingSystem{}
-	str.Trades = []*Trade{}
-	return str
 }
 
 //=============================================================================

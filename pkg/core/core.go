@@ -88,7 +88,7 @@ func run(cfg *app.Config) {
 				ts := handleFile(dir, entry.Name())
 				if ts != nil {
 					if tsIn,ok:=tsMap.TradingSystems[ts.Name]; ok {
-						tsIn.Trades = append(tsIn.Trades, ts.Trades...)
+						tsIn.TradeLists = append(tsIn.TradeLists, ts.TradeLists...)
 					} else {
 						tsMap.TradingSystems[ts.Name] = ts
 					}
@@ -116,9 +116,10 @@ func handleFile(dir string, fileName string) *TradingSystem {
 
 	scanner := bufio.NewScanner(file)
 	ts      := NewTradingSystem()
+	tl      := NewTradeList()
 
 	for scanner.Scan() {
-		if err = handleLine(ts, scanner.Text()); err != nil {
+		if err = handleLine(ts, tl, scanner.Text()); err != nil {
 			log.Println(err.Error())
 			return nil
 		}
@@ -129,19 +130,20 @@ func handleFile(dir string, fileName string) *TradingSystem {
 		return nil
 	}
 
+	ts.TradeLists = append(ts.TradeLists, tl)
 	return ts
 }
 
 //=============================================================================
 
-func handleLine(ts *TradingSystem, line string) error{
+func handleLine(ts *TradingSystem, tl *TradeList, line string) error{
 	tokens := strings.Split(line, "|")
 
 	switch tokens[0] {
 		case INFO:
 			handleInfo(ts, tokens)
 		case TRADE:
-			if err := handleTrade(ts, tokens); err != nil {
+			if err := handleTrade(tl, tokens); err != nil {
 				return err
 			}
 		default:
@@ -160,7 +162,7 @@ func handleInfo(ts *TradingSystem, tokens []string) {
 
 //=============================================================================
 
-func handleTrade(ts *TradingSystem, tokens []string) error {
+func handleTrade(tl *TradeList, tokens []string) error {
 	var err error
 
 	entryDate   := tokens[ 1]
@@ -234,7 +236,7 @@ func handleTrade(ts *TradingSystem, tokens []string) error {
 
 	//-----------------------------------------
 
-	ts.Trades = append(ts.Trades, tr)
+	tl.Trades = append(tl.Trades, tr)
 	return nil
 }
 

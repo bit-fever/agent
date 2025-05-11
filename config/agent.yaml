@@ -3,5 +3,5 @@ general:
   bindAddress: :9443
 scan:
   dir: /my/src/bit-fever/reports
-  periodHour: 4
+  periodHour: 1
   extension: .trl
