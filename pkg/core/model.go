@@ -70,14 +70,16 @@ func NewTradingSystem() *TradingSystem {
 //=============================================================================
 
 type TradeList struct {
-	Trades []*Trade
+	Trades       []*Trade
+	DailyProfits []*DailyProfit
 }
 
 //=============================================================================
 
 func NewTradeList() *TradeList {
 	tl := TradeList{}
-	tl.Trades = []*Trade{}
+	tl.Trades       = []*Trade{}
+	tl.DailyProfits = []*DailyProfit{}
 	return &tl
 }
 
@@ -105,6 +107,21 @@ type Trade struct {
 
 func NewTrade() *Trade {
 	return &Trade{}
+}
+
+//=============================================================================
+
+type DailyProfit struct {
+	Date        int
+	Time        int64
+	GrossProfit float64
+	Trades      int64
+}
+
+//=============================================================================
+
+func NewDailyProfit() *DailyProfit {
+	return &DailyProfit{}
 }
 
 //=============================================================================

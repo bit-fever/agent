@@ -27,19 +27,21 @@ package core
 import (
 	"bufio"
 	"errors"
-	"github.com/bit-fever/agent/pkg/app"
-	"golang.org/x/exp/maps"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/bit-fever/agent/pkg/app"
+	"golang.org/x/exp/maps"
 )
 
 //=============================================================================
 
 const INFO  = "INFO"
 const TRADE = "TRADE"
+const DAILY = "DAILY"
 
 //=============================================================================
 
@@ -146,6 +148,10 @@ func handleLine(ts *TradingSystem, tl *TradeList, line string) error{
 			if err := handleTrade(tl, tokens); err != nil {
 				return err
 			}
+		case DAILY:
+			if err := handleDaily(tl, tokens); err != nil {
+				return err
+			}
 		default:
 			return errors.New("Unknown token: "+ tokens[0])
 	}
@@ -237,6 +243,46 @@ func handleTrade(tl *TradeList, tokens []string) error {
 	//-----------------------------------------
 
 	tl.Trades = append(tl.Trades, tr)
+	return nil
+}
+
+//=============================================================================
+
+func handleDaily(tl *TradeList, tokens []string) error {
+	var err error
+
+	ddate       := tokens[ 1]
+	dtime       := tokens[ 2]
+	grossProfit := tokens[ 3]
+	trades      := tokens[ 4]
+
+	dp := NewDailyProfit()
+
+	//-----------------------------------------
+
+	dp.Date, err = convertDate(ddate)
+	if err != nil {
+		return err
+	}
+
+	dp.Time, err = strconv.ParseInt(dtime, 10, 32)
+	if err != nil {
+		return errors.New("Cannot parse time: "+ dtime)
+	}
+
+	dp.GrossProfit, err = strconv.ParseFloat(grossProfit, 64)
+	if err != nil {
+		return errors.New("Cannot parse gross profit: "+ grossProfit)
+	}
+
+	dp.Trades, err = strconv.ParseInt(trades, 10, 32)
+	if err != nil {
+		return errors.New("Cannot parse trades: "+ trades)
+	}
+
+	//-----------------------------------------
+
+	tl.DailyProfits = append(tl.DailyProfits, dp)
 	return nil
 }
 

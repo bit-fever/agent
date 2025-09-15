@@ -25,9 +25,10 @@ THE SOFTWARE.
 package service
 
 import (
+	"net/http"
+
 	"github.com/bit-fever/agent/pkg/core"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 //=============================================================================
