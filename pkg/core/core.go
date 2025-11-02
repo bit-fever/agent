@@ -33,7 +33,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bit-fever/agent/pkg/app"
+	"github.com/tradalia/agent/pkg/app"
 	"golang.org/x/exp/maps"
 )
 

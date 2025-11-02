@@ -27,9 +27,9 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"github.com/bit-fever/agent/pkg/app"
-	"github.com/bit-fever/agent/pkg/core"
-	"github.com/bit-fever/agent/pkg/service"
+	"github.com/tradalia/agent/pkg/app"
+	"github.com/tradalia/agent/pkg/core"
+	"github.com/tradalia/agent/pkg/service"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"io"
@@ -55,8 +55,8 @@ func main() {
 func readConfig() *app.Config {
 	viper.SetConfigName("agent")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/etc/bit-fever/")
-	viper.AddConfigPath("$HOME/.bit-fever/agent")
+	viper.AddConfigPath("/etc/tradalia/")
+	viper.AddConfigPath("$HOME/.tradalia/agent")
 	viper.AddConfigPath("config")
 
 	err := viper.ReadInConfig()

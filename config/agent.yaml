@@ -2,6 +2,6 @@ general:
   logFile: log/agent.log
   bindAddress: :9443
 scan:
-  dir: /my/src/bit-fever/reports
+  dir: /my/src/tradalia/reports
   periodHour: 1
   extension: .trl
